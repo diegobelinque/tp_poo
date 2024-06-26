@@ -13,6 +13,11 @@ public class PracticaController {
     }
 
     public void agregarPractica(Practica practica) {
+        for (Practica p : practicas) {
+            if (p.getCodigo().equals(practica.getCodigo())) {
+                throw new IllegalArgumentException("La práctica con código " + practica.getCodigo() + " ya existe.");
+            }
+        }
         practicas.add(practica);
     }
 
@@ -23,13 +28,17 @@ public class PracticaController {
                 return;
             }
         }
+        throw new IllegalArgumentException("No se encontró la práctica con código " + practica.getCodigo());
     }
 
     public void eliminarPractica(String codigo) {
-        practicas.removeIf(practica -> practica.getCodigo().equals(codigo));
+        boolean eliminado = practicas.removeIf(practica -> practica.getCodigo().equals(codigo));
+        if (!eliminado) {
+            throw new IllegalArgumentException("No se encontró la práctica con código " + codigo);
+        }
     }
 
     public List<Practica> listarPracticas() {
-        return practicas;
+        return new ArrayList<>(practicas);
     }
 }

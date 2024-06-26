@@ -15,6 +15,12 @@ public class PeticionController {
     }
 
     public void agregarPeticion(Peticion peticion) {
+        for (Peticion p : peticiones) {
+            if (p.getPaciente().getDni().equals(peticion.getPaciente().getDni()) &&
+                    p.getFechaCarga().equals(peticion.getFechaCarga())) {
+                throw new IllegalArgumentException("La petición para el paciente con DNI " + peticion.getPaciente().getDni() + " en la fecha " + peticion.getFechaCarga() + " ya existe.");
+            }
+        }
         peticiones.add(peticion);
     }
 
@@ -26,13 +32,17 @@ public class PeticionController {
                 return;
             }
         }
+        throw new IllegalArgumentException("No se encontró la petición para el paciente con DNI " + peticion.getPaciente().getDni() + " en la fecha " + peticion.getFechaCarga());
     }
 
     public void eliminarPeticion(Paciente paciente, Date fechaCarga) {
-        peticiones.removeIf(peticion -> peticion.getPaciente().equals(paciente) && peticion.getFechaCarga().equals(fechaCarga));
+        boolean eliminado = peticiones.removeIf(peticion -> peticion.getPaciente().equals(paciente) && peticion.getFechaCarga().equals(fechaCarga));
+        if (!eliminado) {
+            throw new IllegalArgumentException("No se encontró la petición para el paciente con DNI " + paciente.getDni() + " en la fecha " + fechaCarga);
+        }
     }
 
     public List<Peticion> listarPeticiones() {
-        return peticiones;
+        return new ArrayList<>(peticiones);
     }
 }

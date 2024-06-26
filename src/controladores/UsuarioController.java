@@ -13,6 +13,11 @@ public class UsuarioController {
     }
 
     public void agregarUsuario(Usuario usuario) {
+        for (Usuario u : usuarios) {
+            if (u.getNombreUsuario().equals(usuario.getNombreUsuario())) {
+                throw new IllegalArgumentException("El usuario con el mismo nombre ya existe.");
+            }
+        }
         usuarios.add(usuario);
     }
 
@@ -23,13 +28,17 @@ public class UsuarioController {
                 return;
             }
         }
+        throw new IllegalArgumentException("No se encontró el usuario con el nombre especificado.");
     }
 
     public void eliminarUsuario(String nombreUsuario) {
-        usuarios.removeIf(usuario -> usuario.getNombreUsuario().equals(nombreUsuario));
+        boolean eliminado = usuarios.removeIf(usuario -> usuario.getNombreUsuario().equals(nombreUsuario));
+        if (!eliminado) {
+            throw new IllegalArgumentException("No se encontró el usuario con el nombre especificado.");
+        }
     }
 
     public List<Usuario> listarUsuarios() {
-        return usuarios;
+        return new ArrayList<>(usuarios);
     }
 }

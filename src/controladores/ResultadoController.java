@@ -14,6 +14,11 @@ public class ResultadoController {
     }
 
     public void agregarResultado(Resultado resultado) {
+        for (Resultado r : resultados) {
+            if (r.getPeticion().equals(resultado.getPeticion())) {
+                throw new IllegalArgumentException("El resultado para la petición ya existe.");
+            }
+        }
         resultados.add(resultado);
     }
 
@@ -24,13 +29,17 @@ public class ResultadoController {
                 return;
             }
         }
+        throw new IllegalArgumentException("No se encontró el resultado para la petición especificada.");
     }
 
     public void eliminarResultado(Peticion peticion) {
-        resultados.removeIf(resultado -> resultado.getPeticion().equals(peticion));
+        boolean eliminado = resultados.removeIf(resultado -> resultado.getPeticion().equals(peticion));
+        if (!eliminado) {
+            throw new IllegalArgumentException("No se encontró el resultado para la petición especificada.");
+        }
     }
 
     public List<Resultado> listarResultados() {
-        return resultados;
+        return new ArrayList<>(resultados);
     }
 }

@@ -13,6 +13,11 @@ public class SucursalController {
     }
 
     public void agregarSucursal(Sucursal sucursal) {
+        for (Sucursal s : sucursales) {
+            if (s.getNumero() == sucursal.getNumero()) {
+                throw new IllegalArgumentException("La sucursal con el mismo número ya existe.");
+            }
+        }
         sucursales.add(sucursal);
     }
 
@@ -23,13 +28,17 @@ public class SucursalController {
                 return;
             }
         }
+        throw new IllegalArgumentException("No se encontró la sucursal con el número especificado.");
     }
 
     public void eliminarSucursal(int numero) {
-        sucursales.removeIf(sucursal -> sucursal.getNumero() == numero);
+        boolean eliminado = sucursales.removeIf(sucursal -> sucursal.getNumero() == numero);
+        if (!eliminado) {
+            throw new IllegalArgumentException("No se encontró la sucursal con el número especificado.");
+        }
     }
 
     public List<Sucursal> listarSucursales() {
-        return sucursales;
+        return new ArrayList<>(sucursales);
     }
 }

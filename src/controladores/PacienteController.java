@@ -13,6 +13,11 @@ public class PacienteController {
     }
 
     public void agregarPaciente(Paciente paciente) {
+        for (Paciente p : pacientes) {
+            if (p.getDni().equals(paciente.getDni())) {
+                throw new IllegalArgumentException("El paciente con DNI " + paciente.getDni() + " ya existe.");
+            }
+        }
         pacientes.add(paciente);
     }
 
@@ -23,13 +28,17 @@ public class PacienteController {
                 return;
             }
         }
+        throw new IllegalArgumentException("No se encontró el paciente con DNI " + paciente.getDni());
     }
 
     public void eliminarPaciente(String dni) {
-        pacientes.removeIf(paciente -> paciente.getDni().equals(dni));
+        boolean eliminado = pacientes.removeIf(paciente -> paciente.getDni().equals(dni));
+        if (!eliminado) {
+            throw new IllegalArgumentException("No se encontró el paciente con DNI " + dni);
+        }
     }
 
     public List<Paciente> listarPacientes() {
-        return pacientes;
+        return new ArrayList<>(pacientes);
     }
 }
