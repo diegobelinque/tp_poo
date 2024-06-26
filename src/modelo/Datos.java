@@ -15,6 +15,11 @@ public class Datos {
     }
 
     public static List<Object> cargarDatos() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            return new ArrayList<>();
+        }
+
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
             return (List<Object>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
