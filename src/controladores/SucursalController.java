@@ -38,6 +38,16 @@ public class SucursalController {
         }
     }
 
+    public Sucursal buscarSucursal(int numero) {
+        for (Sucursal sucursal : sucursales) {
+            if (sucursal.getNumero() == numero) {
+                return sucursal;
+            }
+        }
+        return null; // Devuelve null si no se encuentra la sucursal
+    }
+
+
     public List<Sucursal> listarSucursales() {
         return new ArrayList<>(sucursales);
     }

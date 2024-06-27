@@ -1,10 +1,15 @@
 package vistas;
 
 import controladores.*;
+import modelo.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class VentanaPrincipal extends JFrame {
     private PacienteController pacienteController;
@@ -93,13 +98,25 @@ public class VentanaPrincipal extends JFrame {
 
         itemBajaPaciente.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar paciente
+                String dni = JOptionPane.showInputDialog("Ingrese el DNI del paciente a eliminar:");
+                if (dni != null && !dni.isEmpty()) {
+                    pacienteController.eliminarPaciente(dni);
+                    JOptionPane.showMessageDialog(null, "Paciente eliminado exitosamente.");
+                }
             }
         });
 
         itemModificacionPaciente.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para modificar paciente
+                String dni = JOptionPane.showInputDialog("Ingrese el DNI del paciente a modificar:");
+                if (dni != null && !dni.isEmpty()) {
+                    Paciente paciente = pacienteController.buscarPaciente(dni);
+                    if (paciente != null) {
+                        new PacienteForm(pacienteController, paciente).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Paciente no encontrado.");
+                    }
+                }
             }
         });
 
@@ -111,13 +128,25 @@ public class VentanaPrincipal extends JFrame {
 
         itemBajaSucursal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar sucursal
+                String numero = JOptionPane.showInputDialog("Ingrese el número de la sucursal a eliminar:");
+                if (numero != null && !numero.isEmpty()) {
+                    sucursalController.eliminarSucursal(Integer.parseInt(numero));
+                    JOptionPane.showMessageDialog(null, "Sucursal eliminada exitosamente.");
+                }
             }
         });
 
         itemModificacionSucursal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para modificar sucursal
+                String numero = JOptionPane.showInputDialog("Ingrese el número de la sucursal a modificar:");
+                if (numero != null && !numero.isEmpty()) {
+                    Sucursal sucursal = sucursalController.buscarSucursal(Integer.parseInt(numero));
+                    if (sucursal != null) {
+                        new SucursalForm(sucursalController, sucursal).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Sucursal no encontrada.");
+                    }
+                }
             }
         });
 
@@ -129,13 +158,25 @@ public class VentanaPrincipal extends JFrame {
 
         itemBajaPractica.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar práctica
+                String codigo = JOptionPane.showInputDialog("Ingrese el código de la práctica a eliminar:");
+                if (codigo != null && !codigo.isEmpty()) {
+                    practicaController.eliminarPractica(codigo);
+                    JOptionPane.showMessageDialog(null, "Práctica eliminada exitosamente.");
+                }
             }
         });
 
         itemModificacionPractica.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para modificar práctica
+                String codigo = JOptionPane.showInputDialog("Ingrese el código de la práctica a modificar:");
+                if (codigo != null && !codigo.isEmpty()) {
+                    Practica practica = practicaController.buscarPractica(codigo);
+                    if (practica != null) {
+                        new PracticaForm(practicaController, practica).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Práctica no encontrada.");
+                    }
+                }
             }
         });
 
@@ -147,13 +188,43 @@ public class VentanaPrincipal extends JFrame {
 
         itemBajaPeticion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar petición
+                String dni = JOptionPane.showInputDialog("Ingrese el DNI del paciente de la petición a eliminar:");
+                String fecha = JOptionPane.showInputDialog("Ingrese la fecha de la petición a eliminar (dd/MM/yyyy):");
+                if (dni != null && !dni.isEmpty() && fecha != null && !fecha.isEmpty()) {
+                    try {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        Date fechaCarga = dateFormat.parse(fecha);
+                        peticionController.eliminarPeticion(dni, fechaCarga);
+                        JOptionPane.showMessageDialog(null, "Petición eliminada exitosamente.");
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(null, "Formato de fecha incorrecto. Por favor, use el formato dd/MM/yyyy.");
+                    } catch (IllegalArgumentException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                }
             }
         });
 
         itemModificacionPeticion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para modificar petición
+                String dni = JOptionPane.showInputDialog("Ingrese el DNI del paciente de la petición a modificar:");
+                String fechaStr = JOptionPane.showInputDialog("Ingrese la fecha de la petición a modificar (dd/MM/yyyy):");
+
+                if (dni != null && !dni.isEmpty() && fechaStr != null && !fechaStr.isEmpty()) {
+                    try {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        Date fecha = dateFormat.parse(fechaStr);
+
+                        Peticion peticion = peticionController.buscarPeticion(dni, fecha);
+                        if (peticion != null) {
+                            new PeticionForm(peticionController, pacienteController, practicaController, peticion).setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Petición no encontrada.");
+                        }
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(null, "Formato de fecha inválido. Ingrese la fecha en formato dd/MM/yyyy.");
+                    }
+                }
             }
         });
 
@@ -165,13 +236,25 @@ public class VentanaPrincipal extends JFrame {
 
         itemBajaUsuario.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar usuario
+                String nombreUsuario = JOptionPane.showInputDialog("Ingrese el nombre de usuario a eliminar:");
+                if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+                    usuarioController.eliminarUsuario(nombreUsuario);
+                    JOptionPane.showMessageDialog(null, "Usuario eliminado exitosamente.");
+                }
             }
         });
 
         itemModificacionUsuario.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para modificar usuario
+                String nombreUsuario = JOptionPane.showInputDialog("Ingrese el nombre de usuario a modificar:");
+                if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+                    Usuario usuario = usuarioController.buscarUsuario(nombreUsuario);
+                    if (usuario != null) {
+                        new UsuarioForm(usuarioController, usuario).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Usuario no encontrado.");
+                    }
+                }
             }
         });
 
@@ -183,14 +266,65 @@ public class VentanaPrincipal extends JFrame {
 
         itemBajaResultado.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar resultado
+                String dni = JOptionPane.showInputDialog("Ingrese el DNI del paciente de la petición del resultado a eliminar:");
+                String fechaStr = JOptionPane.showInputDialog("Ingrese la fecha de carga de la petición del resultado a eliminar (dd/MM/yyyy):");
+
+                if (dni != null && !dni.isEmpty() && fechaStr != null && !fechaStr.isEmpty()) {
+                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                    Date fechaCarga = null;
+                    try {
+                        fechaCarga = df.parse(fechaStr);
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(null, "Formato de fecha incorrecto. Use el formato dd/MM/yyyy.");
+                        return;
+                    }
+
+                    Peticion peticion = peticionController.buscarPeticion(dni, fechaCarga);
+                    if (peticion != null) {
+                        try {
+                            resultadoController.eliminarResultado(peticion);
+                            JOptionPane.showMessageDialog(null, "Resultado eliminado exitosamente.");
+                        } catch (IllegalArgumentException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage());
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se encontró la petición especificada.");
+                    }
+                }
             }
         });
 
-        itemModificacionResultado.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para modificar resultado
-            }
-        });
+        itemModificacionResultado.addActionListener(e -> {
+                    String idPeticion = JOptionPane.showInputDialog("Ingrese el ID de la petición del resultado a modificar:");
+                    if (idPeticion != null && !idPeticion.isEmpty()) {
+                        String[] partes = idPeticion.split("-");
+                        if (partes.length == 2) {
+                            String dniPaciente = partes[0].trim();
+                            String fechaCargaStr = partes[1].trim();
+
+                            try {
+                                Date fechaCarga = new SimpleDateFormat("dd/MM/yyyy").parse(fechaCargaStr);
+
+                                Peticion peticion = peticionController.buscarPeticion(dniPaciente, fechaCarga);
+
+                                if (peticion != null) {
+                                    Resultado resultado = resultadoController.buscarResultado(peticion);
+
+                                    if (resultado != null) {
+                                        new ResultadoForm(resultadoController, peticionController, resultado).setVisible(true);
+                                        return; // Salir del método actionPerformed después de mostrar el formulario
+                                    }
+                                }
+
+                                JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para la petición especificada.");
+                            } catch (ParseException ex) {
+                                JOptionPane.showMessageDialog(null, "Formato de fecha inválido. Utilice dd/MM/yyyy.");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Formato de entrada inválido para ID de petición. Debe ser DNI-FechaCarga.");
+                        }
+                    }
+                }
+        );
     }
 }

@@ -38,6 +38,16 @@ public class PacienteController {
         }
     }
 
+    public Paciente buscarPaciente(String dni) {
+        for (Paciente paciente : pacientes) {
+            if (paciente.getDni().equals(dni)) {
+                return paciente;
+            }
+        }
+        return null; // Devuelve null si no se encuentra el paciente
+    }
+
+
     public List<Paciente> listarPacientes() {
         return new ArrayList<>(pacientes);
     }

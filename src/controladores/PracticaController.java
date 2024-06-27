@@ -38,6 +38,15 @@ public class PracticaController {
         }
     }
 
+    public Practica buscarPractica(String codigo) {
+        for (Practica practica : practicas) {
+            if (practica.getCodigo().equals(codigo)) {
+                return practica;
+            }
+        }
+        return null; // Devuelve null si no se encuentra la práctica
+    }
+
     public List<Practica> listarPracticas() {
         return new ArrayList<>(practicas);
     }

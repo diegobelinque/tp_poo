@@ -39,6 +39,15 @@ public class ResultadoController {
         }
     }
 
+    public Resultado buscarResultado(Peticion peticion) {
+        for (Resultado resultado : resultados) {
+            if (resultado.getPeticion().equals(peticion)) {
+                return resultado;
+            }
+        }
+        return null; // Devuelve null si no se encuentra el resultado
+    }
+
     public List<Resultado> listarResultados() {
         return new ArrayList<>(resultados);
     }

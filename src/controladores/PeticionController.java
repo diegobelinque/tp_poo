@@ -35,11 +35,22 @@ public class PeticionController {
         throw new IllegalArgumentException("No se encontró la petición para el paciente con DNI " + peticion.getPaciente().getDni() + " en la fecha " + peticion.getFechaCarga());
     }
 
-    public void eliminarPeticion(Paciente paciente, Date fechaCarga) {
-        boolean eliminado = peticiones.removeIf(peticion -> peticion.getPaciente().equals(paciente) && peticion.getFechaCarga().equals(fechaCarga));
+    public void eliminarPeticion(String dniPaciente, Date fechaCarga) {
+        boolean eliminado = peticiones.removeIf(peticion ->
+                peticion.getPaciente().getDni().equals(dniPaciente) && peticion.getFechaCarga().equals(fechaCarga)
+        );
         if (!eliminado) {
-            throw new IllegalArgumentException("No se encontró la petición para el paciente con DNI " + paciente.getDni() + " en la fecha " + fechaCarga);
+            throw new IllegalArgumentException("No se encontró la petición para el paciente con DNI " + dniPaciente + " en la fecha " + fechaCarga);
         }
+    }
+
+    public Peticion buscarPeticion(String dniPaciente, Date fechaCarga) {
+        for (Peticion peticion : peticiones) {
+            if (peticion.getPaciente().getDni().equals(dniPaciente) && peticion.getFechaCarga().equals(fechaCarga)) {
+                return peticion;
+            }
+        }
+        return null; // Devuelve null si no se encuentra la petición
     }
 
     public List<Peticion> listarPeticiones() {

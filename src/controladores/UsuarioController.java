@@ -38,6 +38,15 @@ public class UsuarioController {
         }
     }
 
+    public Usuario buscarUsuario(String nombreUsuario) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNombreUsuario().equals(nombreUsuario)) {
+                return usuario;
+            }
+        }
+        return null; // Devuelve null si no se encuentra el usuario
+    }
+
     public List<Usuario> listarUsuarios() {
         return new ArrayList<>(usuarios);
     }
