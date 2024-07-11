@@ -30,4 +30,8 @@ public class PeticionDTO implements Serializable {
     public void setPracticasAsociadas(List<Practica> practicasAsociadas) { this.practicasAsociadas = practicasAsociadas; }
     public Date getFechaEntrega() { return fechaEntrega; }
     public void setFechaEntrega(Date fechaEntrega) { this.fechaEntrega = fechaEntrega; }
+
+    public Peticion toEntity() {
+        return new Peticion(paciente, obraSocial, fechaCarga, practicasAsociadas, fechaEntrega);
+    }
 }

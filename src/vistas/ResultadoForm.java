@@ -2,16 +2,13 @@ package vistas;
 
 import controladores.PeticionController;
 import controladores.ResultadoController;
-import modelo.Datos;
-import modelo.Peticion;
-import modelo.Resultado;
+import modelo.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ResultadoForm extends JFrame {
     private JComboBox<Peticion> peticionComboBox;
@@ -19,11 +16,11 @@ public class ResultadoForm extends JFrame {
     private JCheckBox esCriticoCheckBox;
     private JCheckBox esReservadoCheckBox;
     private JButton saveButton;
-    private Resultado resultado;
+    private ResultadoDTO resultado;
     private ResultadoController controller;
     private PeticionController peticionController;
 
-    public ResultadoForm(ResultadoController controller, PeticionController peticionController, Resultado resultado) {
+    public ResultadoForm(ResultadoController controller, PeticionController peticionController, ResultadoDTO resultado) {
         this.controller = controller;
         this.peticionController = peticionController;
         this.resultado = resultado;
@@ -67,15 +64,15 @@ public class ResultadoForm extends JFrame {
     }
 
     private void guardarResultado() {
-        Peticion peticion = (Peticion) peticionComboBox.getSelectedItem();
+        PeticionDTO peticion = (PeticionDTO) peticionComboBox.getSelectedItem();
 
         if (resultado == null) {
             resultado = new Resultado(
-                    peticion,
+                    peticion.toEntity(),
                     valoresField.getText(),
                     esCriticoCheckBox.isSelected(),
                     esReservadoCheckBox.isSelected()
-            );
+            ).toDTO();
             controller.agregarResultado(resultado);
         } else {
             resultado.setPeticion(peticion);

@@ -19,11 +19,12 @@ public class VentanaPrincipal extends JFrame {
     private UsuarioController usuarioController;
     private ResultadoController resultadoController;
 
-    public VentanaPrincipal() {
-        pacienteController = new PacienteController();
+
+    public VentanaPrincipal() throws Exception {
+        pacienteController = new PacienteController().getInstance();
         sucursalController = new SucursalController();
         practicaController = new PracticaController();
-        peticionController = new PeticionController();
+        peticionController = new PeticionController().getInstance();
         usuarioController = new UsuarioController();
         resultadoController = new ResultadoController();
 
@@ -308,7 +309,7 @@ public class VentanaPrincipal extends JFrame {
                                 Peticion peticion = peticionController.buscarPeticion(dniPaciente, fechaCarga);
 
                                 if (peticion != null) {
-                                    Resultado resultado = resultadoController.buscarResultado(peticion);
+                                    ResultadoDTO resultado = resultadoController.buscarResultado(peticion);
 
                                     if (resultado != null) {
                                         new ResultadoForm(resultadoController, peticionController, resultado).setVisible(true);

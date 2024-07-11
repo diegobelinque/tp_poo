@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PacienteController {
-    private List<Paciente> pacientes;
+    private static List<Paciente> pacientes;
+
+    private static PacienteController CONTROLLER = null;
 
     public PacienteController() {
         pacientes = new ArrayList<>();
@@ -51,5 +53,13 @@ public class PacienteController {
 
     public List<Paciente> listarPacientes() {
         return new ArrayList<>(pacientes);
+    }
+
+    public static PacienteController getInstance() throws Exception{
+        if (CONTROLLER == null){
+            CONTROLLER = new PacienteController();
+            pacientes = new ArrayList<>();
+        }
+        return CONTROLLER;
     }
 }

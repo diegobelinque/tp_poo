@@ -1,5 +1,6 @@
 package controladores;
 
+import modelo.Paciente;
 import modelo.Peticion;
 
 import java.util.ArrayList;
@@ -7,7 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 public class PeticionController {
-    private List<Peticion> peticiones;
+    private static List<Peticion> peticiones;
+    private static PeticionController CONTROLLER = null;
 
     public PeticionController() {
         peticiones = new ArrayList<>();
@@ -54,5 +56,13 @@ public class PeticionController {
 
     public List<Peticion> listarPeticiones() {
         return new ArrayList<>(peticiones);
+    }
+
+    public static PeticionController getInstance() throws Exception{
+        if (CONTROLLER == null){
+            CONTROLLER = new PeticionController();
+            peticiones = new ArrayList<>();
+        }
+        return CONTROLLER;
     }
 }

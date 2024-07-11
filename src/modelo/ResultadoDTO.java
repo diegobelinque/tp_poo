@@ -1,14 +1,12 @@
 package modelo;
 
-import java.io.Serializable;
-
-public class Resultado implements Serializable {
-    private Peticion peticion;
+public class ResultadoDTO {
+    private PeticionDTO peticion;
     private String valores;
     private boolean esCritico;
     private boolean esReservado;
 
-    public Resultado(Peticion peticion, String valores, boolean esCritico, boolean esReservado) {
+    public ResultadoDTO(PeticionDTO peticion, String valores, boolean esCritico, boolean esReservado) {
         this.peticion = peticion;
         this.valores = valores;
         this.esCritico = esCritico;
@@ -16,8 +14,8 @@ public class Resultado implements Serializable {
     }
 
     // Getters y Setters
-    public Peticion getPeticion() { return peticion; }
-    public void setPeticion(Peticion peticion) { this.peticion = peticion; }
+    public PeticionDTO getPeticion() { return peticion; }
+    public void setPeticion(PeticionDTO peticion) { this.peticion = peticion; }
     public String getValores() { return valores; }
     public void setValores(String valores) { this.valores = valores; }
     public boolean isEsCritico() { return esCritico; }
@@ -25,12 +23,7 @@ public class Resultado implements Serializable {
     public boolean isEsReservado() { return esReservado; }
     public void setEsReservado(boolean esReservado) { this.esReservado = esReservado; }
 
-    public ResultadoDTO toDTO() {
-        return new ResultadoDTO(
-                this.peticion.getDTO(peticion),
-                this.valores,
-                this.esCritico,
-                this.esReservado
-        );
+    public Resultado toEntity() {
+        return new Resultado(peticion.toEntity(), valores, esCritico, esReservado);
     }
 }
