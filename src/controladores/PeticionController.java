@@ -1,6 +1,5 @@
 package controladores;
 
-import modelo.Paciente;
 import modelo.Peticion;
 
 import java.util.ArrayList;

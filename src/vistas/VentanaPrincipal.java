@@ -110,7 +110,7 @@ public class VentanaPrincipal extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String dni = JOptionPane.showInputDialog("Ingrese el DNI del paciente a modificar:");
                 if (dni != null && !dni.isEmpty()) {
-                    Paciente paciente = pacienteController.buscarPaciente(dni);
+                    PacienteDTO paciente = pacienteController.buscarPaciente(dni);
                     if (paciente != null) {
                         new PacienteForm(pacienteController, paciente).setVisible(true);
                     } else {

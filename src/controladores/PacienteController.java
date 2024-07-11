@@ -1,6 +1,7 @@
 package controladores;
 
 import modelo.Paciente;
+import modelo.PacienteDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +39,10 @@ public class PacienteController {
         }
     }
 
-    public Paciente buscarPaciente(String dni) {
+    public PacienteDTO buscarPaciente(String dni) {
         for (Paciente paciente : pacientes) {
             if (paciente.getDni().equals(dni)) {
-                return paciente;
+                return paciente.getDTO(paciente);
             }
         }
         return null; // Devuelve null si no se encuentra el paciente

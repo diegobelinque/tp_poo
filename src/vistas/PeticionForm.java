@@ -3,15 +3,14 @@ package vistas;
 import controladores.PacienteController;
 import controladores.PeticionController;
 import controladores.PracticaController;
-import modelo.Datos;
-import modelo.Paciente;
-import modelo.Peticion;
-import modelo.Practica;
+import modelo.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +26,7 @@ public class PeticionForm extends JFrame {
     private PeticionController controller;
     private PacienteController pacienteController;
     private PracticaController practicaController;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public PeticionForm(PeticionController controller, PacienteController pacienteController, PracticaController practicaController, Peticion peticion) {
         this.controller = controller;
@@ -53,7 +53,7 @@ public class PeticionForm extends JFrame {
         add(obraSocialField);
 
         add(new JLabel("Fecha de Carga:"));
-        fechaCargaField = new JTextField(peticion != null ? peticion.getFechaCarga().toString() : "");
+        fechaCargaField = new JTextField(peticion != null ? dateFormat.format(peticion.getFechaCarga()) : "");
         add(fechaCargaField);
 
         add(new JLabel("Prácticas:"));
@@ -67,7 +67,7 @@ public class PeticionForm extends JFrame {
         add(practicasComboBox);
 
         add(new JLabel("Fecha de Entrega:"));
-        fechaEntregaField = new JTextField(peticion != null ? peticion.getFechaEntrega().toString() : "");
+        fechaEntregaField = new JTextField(peticion != null ? dateFormat.format(peticion.getFechaEntrega()) : "");
         add(fechaEntregaField);
 
         saveButton = new JButton("Guardar");
@@ -75,31 +75,40 @@ public class PeticionForm extends JFrame {
 
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                guardarPeticion();
+                try {
+                    guardarPeticion();
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(PeticionForm.this, "Formato de fecha incorrecto. Use 'yyyy-MM-dd'.");
+                }
             }
         });
     }
 
-    private void guardarPeticion() {
+    private void guardarPeticion() throws ParseException {
         Paciente paciente = (Paciente) pacienteComboBox.getSelectedItem();
         Practica practica = (Practica) practicasComboBox.getSelectedItem();
-        List<Practica> practicasAsociadas = List.of(practica); // Simplificado
+        List<Practica> practicasAsociadas = new ArrayList<>();
+        practicasAsociadas.add(practica); // Simplificado
+
+        Date fechaCarga = dateFormat.parse(fechaCargaField.getText());
+        Date fechaEntrega = dateFormat.parse(fechaEntregaField.getText());
 
         if (peticion == null) {
             peticion = new Peticion(
                     paciente,
                     obraSocialField.getText(),
-                    new Date(fechaCargaField.getText()),
+                    fechaCarga,
                     practicasAsociadas,
-                    new Date(fechaEntregaField.getText())
+                    fechaEntrega
             );
             controller.agregarPeticion(peticion);
         } else {
             peticion.setPaciente(paciente);
             peticion.setObraSocial(obraSocialField.getText());
-            peticion.setFechaCarga(new Date(fechaCargaField.getText()));
+            peticion.setFechaCarga(fechaCarga);
             peticion.setPracticasAsociadas(practicasAsociadas);
-            peticion.setFechaEntrega(new Date(fechaEntregaField.getText()));
+            peticion.setFechaEntrega(fechaEntrega);
             controller.modificarPeticion(peticion);
         }
 

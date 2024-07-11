@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Peticion implements Serializable {
+public class PeticionDTO implements Serializable {
     private Paciente paciente;
     private String obraSocial;
     private Date fechaCarga;
     private List<Practica> practicasAsociadas;
     private Date fechaEntrega;
 
-    public Peticion(Paciente paciente, String obraSocial, Date fechaCarga, List<Practica> practicasAsociadas, Date fechaEntrega) {
+    public PeticionDTO(Paciente paciente, String obraSocial, Date fechaCarga, List<Practica> practicasAsociadas, Date fechaEntrega) {
         this.paciente = paciente;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
@@ -30,8 +30,4 @@ public class Peticion implements Serializable {
     public void setPracticasAsociadas(List<Practica> practicasAsociadas) { this.practicasAsociadas = practicasAsociadas; }
     public Date getFechaEntrega() { return fechaEntrega; }
     public void setFechaEntrega(Date fechaEntrega) { this.fechaEntrega = fechaEntrega; }
-
-    public PeticionDTO getDTO(Peticion peticion){
-        return new PeticionDTO(peticion.getPaciente(), peticion.getObraSocial(), peticion.getFechaCarga(), peticion.getPracticasAsociadas(),peticion.getFechaEntrega());
-    }
 }

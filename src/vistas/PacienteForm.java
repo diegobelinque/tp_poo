@@ -3,6 +3,7 @@ package vistas;
 import controladores.PacienteController;
 import modelo.Datos;
 import modelo.Paciente;
+import modelo.PacienteDTO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,39 +19,37 @@ public class PacienteForm extends JFrame {
     private JTextField sexoField;
     private JTextField edadField;
     private JButton saveButton;
-    private Paciente paciente;
     private PacienteController controller;
 
-    public PacienteForm(PacienteController controller, Paciente paciente) {
+    public PacienteForm(PacienteController controller, PacienteDTO pacienteDTO) {
         this.controller = controller;
-        this.paciente = paciente;
-        setTitle(paciente == null ? "Alta Paciente" : "Modificar Paciente");
+        setTitle(pacienteDTO == null ? "Alta Paciente" : "Modificar Paciente");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new GridLayout(7, 2));
 
         add(new JLabel("DNI:"));
-        dniField = new JTextField(paciente != null ? paciente.getDni() : "");
+        dniField = new JTextField(pacienteDTO != null ? pacienteDTO.getDni() : "");
         add(dniField);
 
         add(new JLabel("Nombre:"));
-        nombreField = new JTextField(paciente != null ? paciente.getNombre() : "");
+        nombreField = new JTextField(pacienteDTO != null ? pacienteDTO.getNombre() : "");
         add(nombreField);
 
         add(new JLabel("Domicilio:"));
-        domicilioField = new JTextField(paciente != null ? paciente.getDomicilio() : "");
+        domicilioField = new JTextField(pacienteDTO != null ? pacienteDTO.getDomicilio() : "");
         add(domicilioField);
 
         add(new JLabel("Mail:"));
-        mailField = new JTextField(paciente != null ? paciente.getMail() : "");
+        mailField = new JTextField(pacienteDTO != null ? pacienteDTO.getMail() : "");
         add(mailField);
 
         add(new JLabel("Sexo:"));
-        sexoField = new JTextField(paciente != null ? paciente.getSexo() : "");
+        sexoField = new JTextField(pacienteDTO != null ? pacienteDTO.getSexo() : "");
         add(sexoField);
 
         add(new JLabel("Edad:"));
-        edadField = new JTextField(paciente != null ? String.valueOf(paciente.getEdad()) : "");
+        edadField = new JTextField(pacienteDTO != null ? String.valueOf(pacienteDTO.getEdad()) : "");
         add(edadField);
 
         saveButton = new JButton("Guardar");
@@ -64,23 +63,18 @@ public class PacienteForm extends JFrame {
     }
 
     private void guardarPaciente() {
-        if (paciente == null) {
-            paciente = new Paciente(
-                    dniField.getText(),
-                    nombreField.getText(),
-                    domicilioField.getText(),
-                    mailField.getText(),
-                    sexoField.getText(),
-                    Integer.parseInt(edadField.getText())
-            );
+        Paciente paciente = new Paciente(
+                dniField.getText(),
+                nombreField.getText(),
+                domicilioField.getText(),
+                mailField.getText(),
+                sexoField.getText(),
+                Integer.parseInt(edadField.getText())
+        );
+
+        if (controller.buscarPaciente(paciente.getDni()) == null) {
             controller.agregarPaciente(paciente);
         } else {
-            paciente.setDni(dniField.getText());
-            paciente.setNombre(nombreField.getText());
-            paciente.setDomicilio(domicilioField.getText());
-            paciente.setMail(mailField.getText());
-            paciente.setSexo(sexoField.getText());
-            paciente.setEdad(Integer.parseInt(edadField.getText()));
             controller.modificarPaciente(paciente);
         }
 

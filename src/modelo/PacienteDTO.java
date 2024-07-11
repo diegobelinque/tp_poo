@@ -2,7 +2,7 @@ package modelo;
 
 import java.io.Serializable;
 
-public class Paciente implements Serializable {
+public class PacienteDTO implements Serializable {
     private String dni;
     private String nombre;
     private String domicilio;
@@ -10,7 +10,7 @@ public class Paciente implements Serializable {
     private String sexo;
     private int edad;
 
-    public Paciente(String dni, String nombre, String domicilio, String mail, String sexo, int edad) {
+    public PacienteDTO(String dni, String nombre, String domicilio, String mail, String sexo, int edad) {
         this.dni = dni;
         this.nombre = nombre;
         this.domicilio = domicilio;
@@ -33,7 +33,5 @@ public class Paciente implements Serializable {
     public int getEdad() { return edad; }
     public void setEdad(int edad) { this.edad = edad; }
 
-    public PacienteDTO getDTO(Paciente Paciente){
-        return new PacienteDTO(Paciente.getDni(), Paciente.getNombre(), Paciente.getDomicilio(), Paciente.getMail(), Paciente.getSexo(), Paciente.getEdad());
-    }
+
 }
