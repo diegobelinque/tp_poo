@@ -3,6 +3,7 @@ package modelo;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PeticionDTO implements Serializable {
     private Paciente paciente;
@@ -32,6 +33,11 @@ public class PeticionDTO implements Serializable {
     public void setFechaEntrega(Date fechaEntrega) { this.fechaEntrega = fechaEntrega; }
 
     public Peticion toEntity() {
-        return new Peticion(paciente, obraSocial, fechaCarga, practicasAsociadas, fechaEntrega);
+        // Convert PacienteDTO to Paciente
+        Paciente pacienteEntity = this.paciente;
+        // Convert PracticaDTO list to Practica list
+        List<Practica> practicasAsociadasEntity = this.practicasAsociadas.stream()
+                .collect(Collectors.toList());
+        return new Peticion(pacienteEntity, obraSocial, fechaCarga, practicasAsociadasEntity, fechaEntrega);
     }
 }

@@ -1,7 +1,7 @@
 package controladores;
 
-import modelo.Paciente;
 import modelo.Peticion;
+import modelo.Resultado;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,8 +10,9 @@ import java.util.List;
 public class PeticionController {
     private static List<Peticion> peticiones;
     private static PeticionController CONTROLLER = null;
+    private ResultadoController resultadoController;
 
-    public PeticionController() {
+    public  PeticionController() {
         peticiones = new ArrayList<>();
     }
 
@@ -66,6 +67,20 @@ public class PeticionController {
             }
         }
         return peticionesPaciente;
+    }
+
+    public List<Peticion> listarPeticionesCriticas() {
+        List<Peticion> peticionesCriticas = new ArrayList<>();
+        for (Peticion peticion : peticiones) {
+            List<Resultado> resultados = resultadoController.listarResultadosPorPeticion(peticion);
+            for (Resultado resultado : resultados) {
+                if (resultado.isEsCritico()) {
+                    peticionesCriticas.add(peticion);
+                    break; // No necesitamos agregar la misma petición más de una vez
+                }
+            }
+        }
+        return peticionesCriticas;
     }
 
     public static PeticionController getInstance() {
