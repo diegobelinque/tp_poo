@@ -15,6 +15,7 @@ public class ResultadoForm extends JFrame {
     private JTextField valoresField;
     private JCheckBox esCriticoCheckBox;
     private JCheckBox esReservadoCheckBox;
+    private JCheckBox esFinalizadoCheckBox; // Añadido
     private JButton saveButton;
     private ResultadoDTO resultado;
     private ResultadoController controller;
@@ -25,9 +26,9 @@ public class ResultadoForm extends JFrame {
         this.peticionController = peticionController;
         this.resultado = resultado;
         setTitle(resultado == null ? "Alta Resultado" : "Modificar Resultado");
-        setSize(400, 300);
+        setSize(400, 350); // Ajuste para acomodar el nuevo checkbox
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(5, 2));
+        setLayout(new GridLayout(6, 2)); // Ajuste para acomodar el nuevo checkbox
 
         add(new JLabel("Petición:"));
         peticionComboBox = new JComboBox<>();
@@ -53,6 +54,11 @@ public class ResultadoForm extends JFrame {
         esReservadoCheckBox.setSelected(resultado != null && resultado.isEsReservado());
         add(esReservadoCheckBox);
 
+        add(new JLabel("Es Finalizado:")); // Añadido
+        esFinalizadoCheckBox = new JCheckBox(); // Añadido
+        esFinalizadoCheckBox.setSelected(resultado != null && resultado.isFinalizado()); // Añadido
+        add(esFinalizadoCheckBox); // Añadido
+
         saveButton = new JButton("Guardar");
         add(saveButton);
 
@@ -71,7 +77,8 @@ public class ResultadoForm extends JFrame {
                     peticion.toEntity(),
                     valoresField.getText(),
                     esCriticoCheckBox.isSelected(),
-                    esReservadoCheckBox.isSelected()
+                    esReservadoCheckBox.isSelected(),
+                    esFinalizadoCheckBox.isSelected() // Añadido
             ).toDTO();
             controller.agregarResultado(resultado);
         } else {
@@ -79,6 +86,7 @@ public class ResultadoForm extends JFrame {
             resultado.setValores(valoresField.getText());
             resultado.setEsCritico(esCriticoCheckBox.isSelected());
             resultado.setEsReservado(esReservadoCheckBox.isSelected());
+            resultado.setFinalizado(esFinalizadoCheckBox.isSelected()); // Añadido
             controller.modificarResultado(resultado);
         }
 

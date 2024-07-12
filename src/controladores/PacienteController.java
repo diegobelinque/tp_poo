@@ -58,7 +58,7 @@ public class PacienteController {
     public static PacienteController getInstance() throws Exception{
         if (CONTROLLER == null){
             CONTROLLER = new PacienteController();
-            pacientes = new ArrayList<>();
+            pacientes = new ArrayList<Paciente>();
         }
         return CONTROLLER;
     }

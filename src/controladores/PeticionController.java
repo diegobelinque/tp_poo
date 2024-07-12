@@ -58,7 +58,17 @@ public class PeticionController {
         return new ArrayList<>(peticiones);
     }
 
-    public static PeticionController getInstance() throws Exception{
+    public List<Peticion> listarPeticionesPorPaciente(String dniPaciente) {
+        List<Peticion> peticionesPaciente = new ArrayList<>();
+        for (Peticion peticion : peticiones) {
+            if (peticion.getPaciente().getDni().equals(dniPaciente)) {
+                peticionesPaciente.add(peticion);
+            }
+        }
+        return peticionesPaciente;
+    }
+
+    public static PeticionController getInstance() {
         if (CONTROLLER == null){
             CONTROLLER = new PeticionController();
             peticiones = new ArrayList<>();

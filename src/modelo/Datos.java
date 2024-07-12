@@ -1,12 +1,14 @@
 package modelo;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Datos {
+public class Datos implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final String FILE_NAME = "datos.dat";
 
-    public static void guardarDatos(List<Object> datos) {
+    public static void guardarDatos(List<?> datos) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
             oos.writeObject(datos);
         } catch (IOException e) {
@@ -14,14 +16,14 @@ public class Datos {
         }
     }
 
-    public static List<Object> cargarDatos() {
+    public static List<?> cargarDatos() {
         File file = new File(FILE_NAME);
         if (!file.exists()) {
             return new ArrayList<>();
         }
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
-            return (List<Object>) ois.readObject();
+            return (List<?>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

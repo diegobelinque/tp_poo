@@ -1,6 +1,10 @@
 package modelo;
 
+import controladores.PeticionController;
+import controladores.ResultadoController;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Paciente implements Serializable {
     private String dni;
@@ -33,7 +37,17 @@ public class Paciente implements Serializable {
     public int getEdad() { return edad; }
     public void setEdad(int edad) { this.edad = edad; }
 
-    public PacienteDTO getDTO(Paciente Paciente){
-        return new PacienteDTO(Paciente.getDni(), Paciente.getNombre(), Paciente.getDomicilio(), Paciente.getMail(), Paciente.getSexo(), Paciente.getEdad());
+    public PacienteDTO getDTO(Paciente paciente){
+        return new PacienteDTO(paciente.getDni(), paciente.getNombre(), paciente.getDomicilio(), paciente.getMail(), paciente.getSexo(), paciente.getEdad());
+    }
+
+    public boolean puedeSerEliminado(PeticionController peticionController, ResultadoController resultadoController) {
+        List<Peticion> peticionesPaciente = peticionController.listarPeticionesPorPaciente(this.dni);
+        for (Peticion peticion : peticionesPaciente) {
+            if (resultadoController.listarResultadosPorPeticion(peticion).stream().anyMatch(Resultado::isFinalizado)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -51,11 +51,17 @@ public class ResultadoController {
         return null; // Devuelve null si no se encuentra el resultado
     }
 
-    public List<ResultadoDTO> listarResultados() {
-        List<ResultadoDTO> resultadoDTOs = new ArrayList<>();
+    public List<Resultado> listarResultados() {
+        return new ArrayList<>(resultados);
+    }
+
+    public List<Resultado> listarResultadosPorPeticion(Peticion peticion) {
+        List<Resultado> resultadosPeticion = new ArrayList<>();
         for (Resultado resultado : resultados) {
-            resultadoDTOs.add(resultado.toDTO());
+            if (resultado.getPeticion().equals(peticion)) {
+                resultadosPeticion.add(resultado);
+            }
         }
-        return resultadoDTOs;
+        return resultadosPeticion;
     }
 }
